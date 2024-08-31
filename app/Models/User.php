@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -44,5 +45,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    protected function vacancies()
+    {
+        return $this->hasMany(Vacancy::class);
     }
 }
