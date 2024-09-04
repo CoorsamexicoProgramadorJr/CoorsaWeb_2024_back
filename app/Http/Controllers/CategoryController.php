@@ -40,7 +40,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($category_id);
 
-        if(!$category){
+        if($category === null){
             return response()->json([
                 'message' => 'Category not found.',
                 'status' => 404
@@ -49,7 +49,7 @@ class CategoryController extends Controller
 
         $vacancies = $category->vacancies;
 
-        if($vacancies->empty()){
+        if($vacancies === null){
             return response()->json([
                 'message' => 'Vacancies not found.',
                 'status' => 404
