@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AreaCodeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConsultController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +21,17 @@ Route::group(['prefix' => 'v1'], function(){
 
   Route::get('vacancies', [VacancyController::class, 'index']);
   Route::get('vacancies/{id}', [VacancyController::class, 'show']);
+
+  Route::get('services', [ServiceController::class, 'index']);
+
+  Route::get('areaCodes', [AreaCodeController::class, 'index']);
+  Route::get('areaCodes/{id}', [AreaCodeController::class, 'show']);
+  
+  Route::get('states', [StateController::class, 'index']);
+  Route::get('states/{id}', [StateController::class, 'show']);
+
+  Route::get('consults', [ConsultController::class, 'index']);
+  Route::get('consults/{id}', [ConsultController::class, 'show']);
   
   // Private endpoints
   Route::middleware('auth:sanctum')->group(function(){
@@ -36,5 +51,20 @@ Route::group(['prefix' => 'v1'], function(){
     Route::post('vacancies', [VacancyController::class, 'store']);
     Route::put('vacancies/{id}', [VacancyController::class, 'update']);
     Route::delete('vacancies/{id}', [VacancyController::class, 'destroy']);
+
+    Route::post('services', [ServiceController::class, 'store']);
+    Route::get('services/{id}', [ServiceController::class, 'show']);
+    Route::put('services/{id}', [ServiceController::class, 'update']);
+    Route::delete('services/{id}', [ServiceController::class, 'destroy']);
+
+    Route::post('areaCodes', [AreaCodeController::class, 'store']);
+    Route::put('areaCodes/{id}', [AreaCodeController::class, 'update']);
+    Route::delete('areaCodes/{id}', [AreaCodeController::class, 'destroy']);
+    
+    Route::post('states', [StateController::class, 'store']);
+    Route::put('states/{id}', [StateController::class, 'update']);
+    Route::delete('states/{id}', [StateController::class, 'destroy']);
+
+    Route::post('consults', [ConsultController::class, 'store']);
   });
 });
