@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\AreaCodeController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\ConsultController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\StateController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AreaCodeController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ApliccationController;
+use App\Http\Controllers\ApplicationController;
 
 Route::group(['prefix' => 'v1'], function(){
   // Public endpoints
@@ -29,9 +31,11 @@ Route::group(['prefix' => 'v1'], function(){
   
   Route::get('states', [StateController::class, 'index']);
   Route::get('states/{id}', [StateController::class, 'show']);
+  Route::get('fullStates', [StateController::class, 'fullStatesData']);
 
-  Route::get('consults', [ConsultController::class, 'index']);
-  Route::get('consults/{id}', [ConsultController::class, 'show']);
+  Route::post('consults', [ConsultController::class, 'store']);
+  
+  Route::post('applications', [ApplicationController::class, 'store']);
   
   // Private endpoints
   Route::middleware('auth:sanctum')->group(function(){
@@ -65,6 +69,10 @@ Route::group(['prefix' => 'v1'], function(){
     Route::put('states/{id}', [StateController::class, 'update']);
     Route::delete('states/{id}', [StateController::class, 'destroy']);
 
-    Route::post('consults', [ConsultController::class, 'store']);
+    Route::get('consults', [ConsultController::class, 'index']);
+    Route::get('consults/{id}', [ConsultController::class, 'show']);
+    
+    Route::get('applications', [ApplicationController::class, 'index']);
+    Route::get('applications/{id}', [ApplicationController::class, 'show']);
   });
 });

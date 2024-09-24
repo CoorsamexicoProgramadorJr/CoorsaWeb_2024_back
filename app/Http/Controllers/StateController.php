@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AreaCode;
 use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,20 @@ class StateController extends Controller
 
         return response()->json([
             'message' => 'States queried successfully.',
+            'data' => $states,
+            'status' => 200
+        ]);
+    }
+
+    public function fullStatesData(){
+        $states = State::all();
+
+        foreach($states as $state){
+            $state->area_code->code;
+        }
+
+        return response()->json([
+            'message' => 'Full data of states queried successfully',
             'data' => $states,
             'status' => 200
         ]);

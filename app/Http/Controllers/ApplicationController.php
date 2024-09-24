@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Consult;
+use App\Models\Application;
 use Illuminate\Http\Request;
-use App\Mail\MailConsult;
+use App\Mail\MailApplication;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class ConsultController extends Controller
+class ApplicationController extends Controller
 {
+    //
     public function index()
     {
-        $consults = Consult::all();
+        $applications = Application::all();
 
         return response()->json([
-            'message' => 'Consult queried successfully.',
-            'data' => $consults,
+            'message' => 'Applications queried successfully',
+            'data' => $applications,
             'status' => 200
         ]);
     }
 
     public function show($id)
     {
-        $consult = Consult::find($id);
+        $application = Application::find($id);
 
-        if(!$consult){
+        if(!$application){
             return response()->json([
-                'message' => 'Consult not found.',
+                'message' => 'Application not found.',
                 'status' => 404
             ], 404);
         }
 
         return response()->json([
-            'message' => 'Consult found successfully.',
-            'data' => $consult,
+            'message' => 'Application found successfully.',
+            'data' => $application,
             'status' => 200
         ]);
     }
@@ -42,30 +43,31 @@ class ConsultController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'min:4', 'max:255'],
             'phone' => ['required', 'max:15', 'min:12', 'regex:/^\\+?\\d{3}-\\d{3}-\\d{4}$/'],
             'email' => 'required|email|max:255',
             'message' => 'required|string',
+            'cv' => 'max:255',
+            'vacancy_id' => 'required|integer|gt:0',
+            'category_id' => 'required|integer|gt:0',
             'area_code_id' => 'required|integer|gt:0',
-            'service_id' => 'required|integer|gt:0',
-            'state_id' => 'required|integer|gt:0',
         ]);
 
         if($validation->fails()){
             return response()->json([
-                'message' => 'Invalid data.',
+                'message' => 'Invalid data',
                 'errors' => $validation->errors(),
                 'status' => 400
             ], 400);
         }
 
-        $consult = Consult::create($request->all());
+        $application = Application::create($request->all());
 
-        Mail::to('programador.jr@coorsamexico.mx')->send(new MailConsult($consult));
+        Mail::to('programador.jr@coorsamexico.mx')->send(new MailApplication($application));
 
         return response()->json([
-            'message' => 'Consult created successfully',
-            'data' => $consult,
+            'message' => 'Application created successfully.',
+            'data' => $application,
             'status' => 200
         ]);
     }
