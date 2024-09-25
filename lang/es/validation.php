@@ -162,7 +162,6 @@
     'attributes' => [
       'name' => 'nombre',
       'phone' => 'telefono',
-      'email' => 'correo electronico',
       'message' => 'mensaje',
       'vacancy_id' => 'vacante',
       'category_id' => 'categoria',
