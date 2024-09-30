@@ -11,6 +11,7 @@ use App\Http\Controllers\AreaCodeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ApliccationController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\FileController;
 
 Route::group(['prefix' => 'v1'], function(){
   // Public endpoints
@@ -37,6 +38,7 @@ Route::group(['prefix' => 'v1'], function(){
   
   Route::post('applications', [ApplicationController::class, 'store']);
   
+  Route::post('curriculums', [FileController::class, 'store']);
   // Private endpoints
   Route::middleware('auth:sanctum')->group(function(){
     Route::post('user/logout', [AuthController::class, 'logout']);
