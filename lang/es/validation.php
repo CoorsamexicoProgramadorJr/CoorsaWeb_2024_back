@@ -167,6 +167,7 @@
       'category_id' => 'categoria',
       'area_code_id' => 'lada',
       'service_id' => 'servicio',
-      'state_id' => 'estado'
+      'state_id' => 'estado',
+      'file' => 'archivo'
     ]
   ];

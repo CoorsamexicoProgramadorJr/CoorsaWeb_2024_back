@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->text('message');
-            $table->string('cv');
+            $table->string('cv')->nullable();
             $table->foreignId('vacancy_id')->references('id')->on('vacancies');
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->foreignId('area_code_id')->references('id')->on('area_codes');

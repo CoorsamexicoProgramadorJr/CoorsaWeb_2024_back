@@ -47,7 +47,7 @@ class ApplicationController extends Controller
             'phone' => ['required', 'max:15', 'min:12', 'regex:/^\\+?\\d{3}-\\d{3}-\\d{4}$/'],
             'email' => 'required|email|max:255',
             'message' => 'required|string',
-            'cv' => 'max:255',
+            'cv' => 'nullable|max:255',
             'vacancy_id' => 'required|integer|gt:0',
             'category_id' => 'required|integer|gt:0',
             'area_code_id' => 'required|integer|gt:0',

@@ -25,13 +25,11 @@ class FileController extends Controller
 
         $disk = Storage::disk('gcs');
 
-        $path = $disk->putFile('Curriculums/', $request->file('file'));
-        
-        $url = $disk->path($path);
+        $path = $disk->putFile('Curriculums', $request->file('file'));
 
         return [
             'path' => $path,
-            'url' => $url
+            'public_url' => 'https://storage.googleapis.com/coorsa-mexico-web/' . $path
         ];
     }
 }
