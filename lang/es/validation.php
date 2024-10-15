@@ -168,6 +168,14 @@
       'area_code_id' => 'lada',
       'service_id' => 'servicio',
       'state_id' => 'estado',
-      'file' => 'archivo'
+      'file' => 'archivo',
+      'email' => 'correo electronico',
+      'password' => 'contraseña',
+      'position' => 'Posición',
+      'location' => 'Ubicación',
+      'category' => 'Categoria',
+      'schedule' => 'Horario',
+      'requirements' => 'Requerimientos',
+      'description' => 'Description'
     ]
   ];

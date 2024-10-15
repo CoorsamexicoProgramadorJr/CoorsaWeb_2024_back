@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class VacancyController extends Controller
@@ -11,7 +12,7 @@ class VacancyController extends Controller
     //
     public function index()
     {
-        $vacancies = Vacancy::all();
+        $vacancies = DB::table('vacancies')->orderBy('status', 'desc')->get();
 
         return response()->json([
             'data' => $vacancies,
@@ -29,6 +30,8 @@ class VacancyController extends Controller
                 'status' => 404
             ], 404);
         }
+
+        // return $vacancy->category;
 
         return response()->json([
             'data' => $vacancy,
@@ -82,8 +85,9 @@ class VacancyController extends Controller
             'description' => 'required|string',
             'schedule' => 'required|string|max:255',
             'requirements' => 'required|string',
-            'user_id' => 'required|integer|integer|numeric|gt:0',
-            'category_id' => 'required|integer|integer|numeric|gt:0'
+            'user_id' => 'required|integer|numeric|gt:0',
+            'category_id' => 'required|integer|numeric|gt:0',
+            'status' => 'required|integer|numeric'
         ]);
 
         if($validation->fails()){
@@ -101,6 +105,7 @@ class VacancyController extends Controller
         $vacancy->requirements = $request->requirements;
         $vacancy->user_id = $request->user_id;
         $vacancy->category_id = $request->category_id;
+        $vacancy->status = $request->status;
         $vacancy->save();
 
         return response()->json([
@@ -121,10 +126,11 @@ class VacancyController extends Controller
             ], 404);
         }
 
-        $vacancy->delete();
+        $vacancy->status = 0;
+        $vacancy->save();
 
         return response()->json([
-            'message' => 'Vacancy deleted successfully',
+            'message' => 'Vacancy disabled successfully',
             'status' => 200
         ]);
     }

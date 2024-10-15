@@ -44,9 +44,22 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $validation = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if($validation->fails()){
+            return response()->json([
+                'message' => 'Data validation fails',
+                'errors' => $validation->errors(),
+                'status' => 400
+            ], 400);
+        }
+
         if(!Auth::attempt($request->only('email', 'password'))){
             return response()->json([
-                'message' => 'Credentials do not match',
+                'message' => 'Las Credenciales no concuerdan.',
                 'status' => 404
             ], 404);
         }
@@ -63,9 +76,9 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully',
