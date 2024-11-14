@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -11,7 +12,7 @@ class CategoryController extends Controller
     //
     public function index()
     {
-        $categories = Category::all();
+        $categories = DB::table('categories')->orderBy('status', 'desc')->get();
 
         return response()->json([
             'data' => $categories
@@ -65,18 +66,26 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'user_id' => 'required|integer' 
+        $validation = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:categories',
+            'user_id' => 'required|integer'
         ]);
+
+        if($validation->fails()){
+            return response()->json([
+                'message' => 'Invalid data.',
+                'errors' => $validation->errors(),
+                'status' => 400
+            ], 400);
+        }
 
         $category = Category::create($request->all());
 
         return response()->json([
             'message' => 'Category saved correctly.',
             'data' => $category,
-            'status' => 201
-        ], 201);
+            'status' => 200
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -92,7 +101,8 @@ class CategoryController extends Controller
 
         $validation = Validator::make($request->all(), [
             'name' => 'required|max:255|string',
-            'user_id' => 'required'
+            'user_id' => 'required',
+            'status' => 'required|integer|numeric'
         ]);
 
         if($validation->fails()){
@@ -105,6 +115,7 @@ class CategoryController extends Controller
 
         $category->name = $request->name;
         $category->user_id = $request->user_id;
+        $category->status = $request->status;
         $category->save();
 
         return response()->json([
@@ -125,7 +136,8 @@ class CategoryController extends Controller
             ], 404);
         }
 
-        $category->delete();
+        $category->status = 0;
+        $category->save();
 
         return response()->json([
             'message' => 'Category deleted successfully.',

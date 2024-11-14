@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Consult;
 use Illuminate\Http\Request;
 use App\Mail\MailConsult;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,7 +13,7 @@ class ConsultController extends Controller
 {
     public function index()
     {
-        $consults = Consult::all();
+        $consults = DB::table('consults')->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Consult queried successfully.',

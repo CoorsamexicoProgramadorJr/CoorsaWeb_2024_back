@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Mail\MailApplication;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +14,7 @@ class ApplicationController extends Controller
     //
     public function index()
     {
-        $applications = Application::all();
+        $applications = DB::table('applications')->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Applications queried successfully',
