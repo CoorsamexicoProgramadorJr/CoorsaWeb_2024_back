@@ -9,8 +9,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\AreaCodeController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ApliccationController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\DirectiveController;
 use App\Http\Controllers\FileController;
 
 Route::group(['prefix' => 'v1'], function(){
@@ -76,5 +76,13 @@ Route::group(['prefix' => 'v1'], function(){
     
     Route::get('applications', [ApplicationController::class, 'index']);
     Route::get('applications/{id}', [ApplicationController::class, 'show']);
+
+    // Directives Endpoints
+    Route::get('directives', [DirectiveController::class, 'index']);
+    Route::get('directives/{id}', [DirectiveController::class, 'show']);
+    Route::post('directives', [DirectiveController::class, 'store']);
+    Route::post('directives/{id}/image', [DirectiveController::class, 'newImage']);
+    Route::put('directives/{id}', [DirectiveController::class, 'update']);
+    Route::delete('directives/{id}', [DirectiveController::class, 'destroy']);
   });
 });
