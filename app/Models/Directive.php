@@ -9,5 +9,5 @@ class Directive extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'position', 'image'];
+    protected $fillable = ['name', 'position', 'image', 'active'];
 }

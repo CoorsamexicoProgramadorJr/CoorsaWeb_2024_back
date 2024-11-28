@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Directive;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,7 +12,7 @@ class DirectiveController extends Controller
 {
     public function index()
     {
-        $directives = Directive::all();
+        $directives = DB::table('directives')->orderBy('active', 'desc')->get();
 
         return response()->json([
             'message' => 'Request successful.',
@@ -90,8 +91,8 @@ class DirectiveController extends Controller
         }
 
         $validation = Validator::make($request->all(), [
-            'name' => ['required', 'max:50', 'min:8', 'unique:directives'],
-            'position' => ['required', 'max:50', 'min:3', 'unique:directives'],
+            'name' => 'required|max:50|min:8',
+            'position' => 'required|max:50|min:3',
         ]);
 
         if($validation->fails()){
@@ -165,14 +166,31 @@ class DirectiveController extends Controller
             ], 404);
         }
 
-        $oldImage = substr($directive->image, 64);
-
-        Storage::disk('gcs')->delete('img/Directivos/' . $oldImage);
-
-        $directive->delete();
+        $directive->active = false;
+        $directive->save();
 
         return response()->json([
-            'message' =>'Directive deleted successfully.',
+            'message' =>'Directive deactivated successfully.',
+            'status' => 200
+        ]);
+    }
+
+    public function activateDirective($id){
+        $directive = Directive::find($id);
+
+        if(!$directive){
+            return response()->json([
+                'message' => 'Directive not found.',
+                'status' => 404,
+            ], 404);
+        }
+
+        $directive->active = 1;
+        $directive->save();
+
+        return response()->json([
+            'message' => 'Directive activated successfully',
+            'data' => $directive,
             'status' => 200
         ]);
     }

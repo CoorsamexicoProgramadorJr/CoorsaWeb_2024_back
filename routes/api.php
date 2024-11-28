@@ -39,6 +39,8 @@ Route::group(['prefix' => 'v1'], function(){
   Route::post('applications', [ApplicationController::class, 'store']);
   
   Route::post('curriculums', [FileController::class, 'store']);
+
+  Route::get('directives', [DirectiveController::class, 'index']);
   // Private endpoints
   Route::middleware('auth:sanctum')->group(function(){
     Route::post('user/logout', [AuthController::class, 'logout']);
@@ -78,11 +80,11 @@ Route::group(['prefix' => 'v1'], function(){
     Route::get('applications/{id}', [ApplicationController::class, 'show']);
 
     // Directives Endpoints
-    Route::get('directives', [DirectiveController::class, 'index']);
     Route::get('directives/{id}', [DirectiveController::class, 'show']);
     Route::post('directives', [DirectiveController::class, 'store']);
     Route::post('directives/{id}/image', [DirectiveController::class, 'newImage']);
+    Route::post('directives/{id}', [DirectiveController::class, 'activateDirective']);
     Route::put('directives/{id}', [DirectiveController::class, 'update']);
-    Route::delete('directives/{id}', [DirectiveController::class, 'destroy']);
+    Route::delete('directives/{id}', [DirectiveController::class, 'destroy']);                                                                                                      
   });
 });

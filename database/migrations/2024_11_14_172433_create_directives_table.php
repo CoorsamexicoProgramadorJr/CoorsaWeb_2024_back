@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name', 50)->unique();
             $table->string('position', 50)->unique();
             $table->string('image');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
